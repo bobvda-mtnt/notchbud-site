@@ -546,31 +546,9 @@
 
   .mac-frame { display: none; }
   @media (max-width: 800px) {
-    /* Mobile: the demo lives inside a little Mac screen, not the phone edge */
-    .wordmark, .hint, .flare-l, .flare-r { display: none; }
-    .hero { min-height: auto; padding-bottom: 40px; }
-    .mac-frame {
-      display: block; position: relative;
-      width: calc(100% - 36px); max-width: 430px;
-      min-height: 140px;
-      margin: 18px auto 4px;
-      border-radius: 24px;
-      background:
-        radial-gradient(240px 140px at 26% 8%, rgba(240,246,238,.5), transparent 70%),
-        linear-gradient(180deg, #a7a6ce 0%, #b4bec5 50%, #cfdcc9 100%);
-      box-shadow: 0 24px 60px rgba(20,20,30,.28), inset 0 0 0 6px #0c0c0e;
-      overflow: hidden;
-      transition: height .38s cubic-bezier(.32, 1.16, .45, 1);
-    }
-    body.mobile-demo .blob {
-      position: absolute; top: 6px;
-      width: 132px; border-radius: 0 0 9px 9px;
-    }
-    body.mobile-demo.notch-open .blob {
-      width: calc(100% - 28px);
-      border-radius: 0 0 22px 22px;
-    }
-    body.mobile-demo .blob-content { width: 100%; padding: 38px 14px 14px; }
+    /* Mobile: no notch demo at all — the wordmark carries the brand */
+    .hint, .flare-l, .flare-r, .blob, .mac-frame { display: none !important; }
+    .hero { min-height: auto; padding-top: 76px; padding-bottom: 40px; }
     .steps, .grid { grid-template-columns: 1fr; }
     .price-box { padding: 66px 22px 34px; }
     .pb-tab { font-size: 12.5px; padding: 11px 16px 13px; }
@@ -878,19 +856,6 @@ notchEl.addEventListener('click', () => {
     notchOpen ? closeNotch(0) : openNotch(true);
   }
 });
-
-// Mobile: reparent the blob into the Mac frame, open on load, and let
-// scroll fold it back into the notch (with a little hysteresis).
-if (isMobileDemo && macFrame) {
-  document.body.classList.add('mobile-demo');
-  macFrame.appendChild(notchEl);
-  setTimeout(() => openNotch(false), 60);
-  let folded = false;
-  addEventListener('scroll', () => {
-    if (!folded && scrollY > 170) { folded = true; closeNotch(0); }
-    else if (folded && scrollY < 90) { folded = false; openNotch(false); }
-  }, { passive: true });
-}
 
 // One teasing drop on load, then it waits for you.
 if (!isMobileDemo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
