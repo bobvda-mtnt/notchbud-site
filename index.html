@@ -265,11 +265,25 @@
     display: inline-flex; align-items: center; gap: 8px;
     padding: 15px 30px; border-radius: 999px;
     background: var(--text); color: #fff; font-weight: 600; font-size: 16px;
-    transition: transform .35s var(--ease), box-shadow .35s var(--ease), opacity .2s;
+    position: relative; overflow: hidden;
+    transition: transform .5s cubic-bezier(.32, 1.16, .45, 1),
+                box-shadow .5s var(--ease), opacity .2s;
     box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    will-change: transform;
   }
-  .btn:hover { transform: translateY(-1px) scale(1.02); }
-  .btn:active { transform: scale(.97); transition-duration: .12s; }
+  .btn::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(130px circle at var(--bx, 50%) var(--by, 50%),
+      rgba(255,255,255,.16), transparent 70%);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .btn:hover::after { opacity: 1; }
+  .btn.light::after {
+    background: radial-gradient(130px circle at var(--bx, 50%) var(--by, 50%),
+      rgba(29,29,31,.06), transparent 70%);
+  }
+  .btn:active { transform: scale(.96) !important; transition-duration: .12s; }
   .btn.big { padding: 18px 40px; font-size: 17.5px; gap: 11px; }
   .btn .apple { width: 17px; height: 20px; fill: currentColor; margin-top: -3px; }
   .btn.light { background: var(--fill); color: var(--text); box-shadow: none; font-size: 14.5px; padding: 12px 24px; }
@@ -293,10 +307,28 @@
   .grid { grid-template-columns: repeat(3, 1fr); }
   .step, .feature { text-align: left;
     background: var(--fill); border-radius: var(--radius); padding: 30px;
-    transition: transform .45s cubic-bezier(.32, 1.16, .45, 1);
+    position: relative; overflow: hidden;
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1));
+    transition: transform .4s cubic-bezier(.32, 1.16, .45, 1);
     will-change: transform;
   }
-  .step:hover, .feature:hover { transform: scale(1.025); }
+  .step::after, .feature::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(94,89,168,.09), transparent 65%);
+    opacity: 0; transition: opacity .45s ease;
+  }
+  .step:hover::after, .feature:hover::after { opacity: 1; }
+  .price-box::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(94,89,168,.06), transparent 65%);
+    opacity: 0; transition: opacity .45s ease;
+  }
+  .price-box:hover::after { opacity: 1; }
+  
   .step .n { font-size: 13px; font-weight: 700; color: var(--accent); }
   .step h3, .feature h3 { font-size: 18px; margin: 12px 0 6px; }
   .step p, .feature p { color: var(--muted); font-size: 14.5px; }
@@ -842,6 +874,45 @@ if (rotator && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     next.classList.add('is-on');
     setTimeout(() => prev.classList.remove('is-off'), 950);
   }, 5000);
+}
+
+// Pointer choreography: cards tilt a breath toward the cursor and carry a
+// soft spotlight; buttons lean in magnetically. All damped by the app's
+// spring curve, all skipped for reduced motion or touch.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.step, .feature, .price-box').forEach(card => {
+    const tilts = !card.classList.contains('price-box');
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', (px * 100) + '%');
+      card.style.setProperty('--my', (py * 100) + '%');
+      if (tilts) {
+        card.style.setProperty('--ry', ((px - 0.5) * 4) + 'deg');
+        card.style.setProperty('--rx', ((0.5 - py) * 4) + 'deg');
+        card.style.setProperty('--s', '1.018');
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--s', '1');
+    });
+  });
+
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      btn.style.transform = 'translate(' + (dx * 0.12) + 'px, ' + (dy * 0.22) + 'px) scale(1.03)';
+      btn.style.setProperty('--bx', ((e.clientX - r.left) / r.width * 100) + '%');
+      btn.style.setProperty('--by', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
 }
 
 function copySnippet(btn) {
