@@ -959,6 +959,10 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
     });
   });
 
+  document.querySelectorAll('.hero-copy > *').forEach(el => {
+    el.addEventListener('animationend', () => { el.style.animation = 'none'; });
+  });
+
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();
@@ -967,10 +971,10 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
       const nx = dx / (r.width / 2);   // -1 … 1 across the button
       const ny = dy / (r.height / 2);
       btn.style.transform =
-        'perspective(600px)' +
-        ' translate(' + (dx * 0.12) + 'px, ' + (dy * 0.22) + 'px)' +
-        ' rotateX(' + (-ny * 5) + 'deg) rotateY(' + (nx * 5) + 'deg)' +
-        ' scale(1.03)';
+        'perspective(700px)' +
+        ' translate(' + (dx * 0.05) + 'px, ' + (dy * 0.09) + 'px)' +
+        ' rotateX(' + (-ny * 2) + 'deg) rotateY(' + (nx * 2) + 'deg)' +
+        ' scale(1.012)';
       btn.style.setProperty('--bx', ((e.clientX - r.left) / r.width * 100) + '%');
       btn.style.setProperty('--by', ((e.clientY - r.top) / r.height * 100) + '%');
     });
