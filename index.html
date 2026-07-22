@@ -969,10 +969,17 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
       const r = btn.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
       const dy = e.clientY - (r.top + r.height / 2);
-      btn.style.transform = 'translate(' + (dx * 0.12) + 'px, ' + (dy * 0.22) + 'px) scale(1.03)';
+      const nx = dx / (r.width / 2);   // -1 … 1 across the button
+      const ny = dy / (r.height / 2);
+      btn.style.transform =
+        'perspective(600px)' +
+        ' translate(' + (dx * 0.12) + 'px, ' + (dy * 0.22) + 'px)' +
+        ' rotateX(' + (-ny * 5) + 'deg) rotateY(' + (nx * 5) + 'deg)' +
+        ' scale(1.03)';
       btn.style.setProperty('--bx', ((e.clientX - r.left) / r.width * 100) + '%');
       btn.style.setProperty('--by', ((e.clientY - r.top) / r.height * 100) + '%');
     });
+    // Empty transform hands control back to CSS: the .5s spring settles it home.
     btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 }
