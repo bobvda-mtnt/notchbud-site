@@ -69,7 +69,7 @@
 
   /* The wordmark: quiet, tight, always up top */
   .wordmark {
-    position: fixed; top: 16px; left: 26px; z-index: 90;
+    position: absolute; top: 16px; left: 26px; z-index: 90;
     font-size: 22px; font-weight: 800; letter-spacing: -.045em;
     color: var(--text);
   }
@@ -544,11 +544,39 @@
     .hero-copy > .risen { opacity: 1; transform: none; filter: none; animation: none; }
   }
 
-  .mac-frame { display: none; }
+  .m-hero-shot { display: none; }
   @media (max-width: 800px) {
-    /* Mobile: no notch demo at all — the wordmark carries the brand */
-    .hint, .flare-l, .flare-r, .blob, .mac-frame { display: none !important; }
-    .hero { min-height: auto; padding-top: 76px; padding-bottom: 40px; }
+    /* Mobile: no live notch — a still of the unfolded card instead */
+    .hint, .flare-l, .flare-r, .blob { display: none !important; }
+    .hero { min-height: auto; padding-top: 66px; padding-bottom: 40px; }
+    .m-hero-shot {
+      display: block; position: relative;
+      width: calc(100% - 32px); max-width: 440px;
+      margin: 0 auto 10px;
+      background-color: rgba(13,13,17,.62);
+      background-image: linear-gradient(180deg,
+        #000 0%, #000 8%,
+        rgba(0,0,0,.5) 26%,
+        rgba(0,0,0,.1) 46%,
+        rgba(0,0,0,0) 64%);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(20,20,30,.3),
+                  inset 0 1px 0 rgba(255,255,255,.08);
+      overflow: hidden;
+    }
+    .m-hero-shot::before {
+      content: ""; position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%); z-index: 2;
+      width: 118px; height: 22px; background: #000;
+      border-radius: 0 0 10px 10px;
+    }
+    .m-hero-shot .blob-content {
+      width: 100%; padding: 38px 14px 16px;
+      opacity: 1 !important; transform: none !important;
+    }
+    .m-hero-shot .bento { opacity: 1 !important; transform: none !important; }
     .steps, .grid { grid-template-columns: 1fr; }
     .price-box { padding: 66px 22px 34px; }
     .pb-tab { font-size: 12.5px; padding: 11px 16px 13px; }
@@ -602,7 +630,7 @@
 <div class="flare-r"></div>
 
 <header class="hero">
-  <div class="mac-frame" id="macframe"></div>
+  <div class="m-hero-shot" id="mheroshot" aria-hidden="true"></div>
   <div class="hint" id="hint"><span class="chev">⌃</span> hover the notch</div>
   
   <div class="wrap hero-copy">
@@ -856,6 +884,15 @@ notchEl.addEventListener('click', () => {
     notchOpen ? closeNotch(0) : openNotch(true);
   }
 });
+
+// Mobile: the hero shows a still of the unfolded card, cloned from the
+// live demo markup so it always matches.
+const heroShot = document.getElementById('mheroshot');
+if (isMobileDemo && heroShot && blobContent) {
+  const still = blobContent.cloneNode(true);
+  still.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  heroShot.appendChild(still);
+}
 
 // One teasing drop on load, then it waits for you.
 if (!isMobileDemo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
