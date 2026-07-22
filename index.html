@@ -457,7 +457,7 @@
   .theme-wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
   .theme-card {
     position: relative; overflow: hidden;
-    background: #131317; border-radius: 26px; padding: 58px 18px 18px;
+    background: #131317; border-radius: 26px; padding: 20px 18px 18px;
     width: 100%; max-width: 400px; justify-self: center;
     box-shadow: 0 30px 80px rgba(20,20,30,.18);
   }
@@ -465,26 +465,6 @@
     position: absolute; inset: 0; opacity: 0;
     transition: opacity 1s ease;
     pointer-events: none;
-  }
-  .tc-top {
-    position: absolute; top: 0; left: 0; right: 0; height: 14px;
-    background: #000; z-index: 2;
-  }
-  .tc-notch {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 116px; height: 33px; background: #000;
-    border-radius: 0 0 10px 10px; z-index: 2;
-  }
-  .tc-notch::before, .tc-notch::after {
-    content: ""; position: absolute; top: 14px; width: 8px; height: 8px;
-  }
-  .tc-notch::before {
-    left: -8px;
-    background: radial-gradient(circle at 0 100%, rgba(0,0,0,0) 8px, #000 8px);
-  }
-  .tc-notch::after {
-    right: -8px;
-    background: radial-gradient(circle at 100% 100%, rgba(0,0,0,0) 8px, #000 8px);
   }
   .tc-content { position: relative; z-index: 3; }
   .tc-title { font-size: 11px; font-weight: 600; color: rgba(245,245,247,.6); margin-bottom: 7px; }
@@ -661,8 +641,6 @@
     <div class="theme-card" aria-hidden="true">
       <div class="tc-wash" id="washA"></div>
       <div class="tc-wash" id="washB"></div>
-      <div class="tc-top"></div>
-      <div class="tc-notch"></div>
       <div class="tc-content">
         <div class="tc-title">📅 TODAY'S SCHEDULE</div>
         <div class="tc-item">One meeting: design review at 11:00</div>
@@ -674,7 +652,7 @@
     </div>
     <div>
       <span class="kicker">Customization</span>
-      <h2>Finetune your buddy.</h2>
+      <h2>Customize your productivity partner.</h2>
       <p class="lead">Glass, solid dark, or three gradients distilled from quiet Japanese skies. Or go custom: pick any two colors and NotchBud paints the wash over the glass. The notch itself stays hardware black, always.</p>
       <div class="theme-pills" id="themePills"></div>
     </div>
