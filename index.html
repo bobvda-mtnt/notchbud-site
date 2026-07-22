@@ -532,6 +532,9 @@
     .hero-copy > *:nth-child(4) { animation-delay: .75s; }
     .hero-copy > *:nth-child(5) { animation-delay: .85s; }
     @keyframes rise { to { opacity: 1; transform: none; filter: blur(0); } }
+    /* After the entrance, elements pin their final state and shed the
+       animation so hover transforms can take over. */
+    .hero-copy > .risen { opacity: 1; transform: none; filter: none; animation: none; }
   }
 
   @media (max-width: 800px) {
@@ -984,7 +987,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
   });
 
   document.querySelectorAll('.hero-copy > *').forEach(el => {
-    el.addEventListener('animationend', () => { el.style.animation = 'none'; });
+    el.addEventListener('animationend', () => el.classList.add('risen'));
   });
 
   document.querySelectorAll('.btn').forEach(btn => {
