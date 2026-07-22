@@ -884,7 +884,7 @@ notchEl.addEventListener('click', () => {
 if (isMobileDemo && macFrame) {
   document.body.classList.add('mobile-demo');
   macFrame.appendChild(notchEl);
-  requestAnimationFrame(() => openNotch(false));
+  setTimeout(() => openNotch(false), 60);
   let folded = false;
   addEventListener('scroll', () => {
     if (!folded && scrollY > 170) { folded = true; closeNotch(0); }
