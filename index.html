@@ -123,22 +123,22 @@
   }
 
   /* Concave top fillets — the notch flares into the "bezel" like hardware. */
-  .flare {
+  .flare-l, .flare-r {
     position: fixed; top: 0; width: 12px; height: 12px; z-index: 101;
     pointer-events: none;
     transition: left .3s cubic-bezier(.3, .9, .4, 1);
   }
-  body.notch-open .flare { transition: left .38s cubic-bezier(.32, 1.16, .45, 1); }
-  .flare.l {
+  body.notch-open .flare-l, .flare-r { transition: left .38s cubic-bezier(.32, 1.16, .45, 1); }
+  .flare-l {
     left: calc(50% - 100px);
     background: radial-gradient(circle at 0 100%, rgba(0,0,0,0) 12px, #000 12px);
   }
-  .flare.r {
+  .flare-r {
     left: calc(50% + 88px);
     background: radial-gradient(circle at 100% 100%, rgba(0,0,0,0) 12px, #000 12px);
   }
-  body.notch-open .flare.l { left: calc(50% - min(360px, 50vw - 12px) - 12px); }
-  body.notch-open .flare.r { left: calc(50% + min(360px, 50vw - 12px)); }
+  body.notch-open .flare-l { left: calc(50% - min(360px, 50vw - 12px) - 12px); }
+  body.notch-open .flare-r { left: calc(50% + min(360px, 50vw - 12px)); }
 
   /* Card content lives inside the blob; fades in as the shape settles. */
   .blob-content {
@@ -496,8 +496,8 @@
   </div>
 </div>
 </div>
-<div class="flare l"></div>
-<div class="flare r"></div>
+<div class="flare-l"></div>
+<div class="flare-r"></div>
 
 <header class="hero">
   <div class="hint" id="hint"><span class="chev">⌃</span> hover the notch</div>
