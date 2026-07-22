@@ -1296,6 +1296,19 @@ function copySnippet(btn) {
   btn.textContent = 'Copied ✓';
   setTimeout(() => btn.textContent = 'Copy', 2000);
 }
+
+// Analytics events: downloads and buy clicks, counted by GoatCounter.
+function gcEvent(name) {
+  if (window.goatcounter && window.goatcounter.count) {
+    window.goatcounter.count({ path: name, title: name, event: true });
+  }
+}
+document.querySelectorAll('a[href$="NotchBud.dmg"]').forEach(a =>
+  a.addEventListener('click', () => gcEvent('download-dmg')));
+document.querySelectorAll('a[href*="buy.polar.sh"]').forEach(a =>
+  a.addEventListener('click', () => gcEvent('buy-click')));
 </script>
+<script data-goatcounter="https://notchbud.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
