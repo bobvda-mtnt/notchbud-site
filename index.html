@@ -69,9 +69,13 @@
 
   /* The wordmark: quiet, tight, always up top */
   .wordmark {
-    position: fixed; top: 16px; left: 26px; z-index: 90;
+    position: fixed; top: 14px; left: 20px; z-index: 90;
     font-size: 22px; font-weight: 800; letter-spacing: -.045em;
     color: var(--text);
+    padding: 5px 12px; border-radius: 99px;
+    background: rgba(255,255,255,.55);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
   }
 
   /* THE blob, a single element that IS the notch and becomes the card,
