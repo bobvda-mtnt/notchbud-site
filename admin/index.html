@@ -7,34 +7,243 @@
 <title>NotchBud · Admin</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --text: #1d1d1f; --muted: #6e6e73; --fill: #f5f5f7;
+    --accent: #5e59a8; --accent-soft: #a6a4c8;
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --spring: cubic-bezier(.32, 1.16, .45, 1);
+  }
   body {
-    min-height: 100svh; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(180deg, #a6a4c8 0%, #aeb5c5 40%, #c6d3c4 75%, #d5e1cf 100%);
+    min-height: 100svh;
+    background:
+      linear-gradient(180deg, #a6a4c8 0%, #aeb5c5 22%, #c6d3c4 45%, #d5e1cf 62%, #eff1ec 85%, #fff 100%) no-repeat top / 100% 900px,
+      #fff;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    color: #1d1d1f; text-align: center; padding: 24px;
+    color: var(--text); -webkit-font-smoothing: antialiased;
+    padding: 92px 24px 64px;
   }
-  .card {
-    background: rgba(255,255,255,.72); backdrop-filter: blur(24px);
-    border-radius: 28px; padding: 48px 44px; max-width: 420px;
-    box-shadow: 0 30px 80px rgba(20,20,30,.18);
+  .wordmark {
+    position: absolute; top: 20px; left: 26px;
+    font-size: 20px; font-weight: 800; letter-spacing: -.045em;
+    color: var(--text); text-decoration: none;
   }
-  h1 { font-size: 24px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 10px; }
-  p { font-size: 14px; color: #6e6e73; line-height: 1.55; margin-bottom: 26px; }
-  a.btn {
-    display: inline-block; background: #1d1d1f; color: #fff; text-decoration: none;
-    font-weight: 600; font-size: 15px; padding: 14px 30px; border-radius: 999px;
-    transition: transform .45s cubic-bezier(.32,1.16,.45,1);
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1 { font-size: 34px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 4px; }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+
+  /* Login */
+  .login {
+    background: rgba(255,255,255,.75); backdrop-filter: blur(24px);
+    border-radius: 26px; padding: 40px; max-width: 430px; margin: 8vh auto 0;
+    box-shadow: 0 30px 80px rgba(20,20,30,.16); text-align: center;
   }
-  a.btn:hover { transform: scale(1.03); }
-  .hint { font-size: 12px; color: #86868b; margin-top: 20px; margin-bottom: 0; }
+  .login h1 { font-size: 24px; }
+  .login p { font-size: 13px; color: var(--muted); margin: 10px 0 20px; line-height: 1.55; }
+  .login input {
+    width: 100%; font-size: 14px; padding: 12px 16px;
+    border: 1px solid #e2e2e7; border-radius: 12px; outline: none;
+    font-family: ui-monospace, monospace;
+  }
+  .login input:focus { border-color: var(--accent-soft); }
+  .login button {
+    margin-top: 14px; width: 100%;
+    background: var(--text); color: #fff; border: none; cursor: pointer;
+    font-weight: 600; font-size: 15px; padding: 13px; border-radius: 999px;
+    transition: transform .45s var(--spring);
+  }
+  .login button:hover { transform: scale(1.02); }
+  .login .err { color: #d33; font-size: 12.5px; margin-top: 10px; display: none; }
+  .login .hint { font-size: 11.5px; color: #86868b; margin-top: 16px; }
+  .login .hint a { color: var(--accent); text-decoration: none; }
+
+  /* Dashboard */
+  #dash { display: none; }
+  .rangebar { display: flex; gap: 8px; margin-bottom: 20px; }
+  .range {
+    font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer;
+    padding: 7px 16px; border-radius: 99px; background: var(--fill); border: none;
+    transition: background .3s ease, color .3s ease, transform .45s var(--spring);
+  }
+  .range.on { background: var(--text); color: #fff; transform: scale(1.06); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .tile {
+    background: #fff; border-radius: 20px; padding: 20px 22px;
+    box-shadow: 0 10px 34px rgba(20,20,30,.07);
+  }
+  .tile .k { font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .06em; }
+  .tile .v { font-size: 32px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+  .panel {
+    background: #fff; border-radius: 22px; padding: 24px;
+    box-shadow: 0 10px 34px rgba(20,20,30,.07); margin-top: 14px;
+  }
+  .panel h3 { font-size: 13px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .row { display: flex; justify-content: space-between; align-items: center;
+    font-size: 13.5px; padding: 7px 8px; border-radius: 6px; margin-bottom: 2px; }
+  .row .n { color: var(--text); overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; max-width: 75%; }
+  .row .c { color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+  #chart { width: 100%; height: 180px; }
+  #chart rect { fill: var(--accent-soft); transition: fill .2s; }
+  #chart rect:hover { fill: var(--accent); }
+  .foot { text-align: center; margin-top: 26px; font-size: 12px; color: var(--muted); }
+  .foot a { color: var(--accent); text-decoration: none; }
+  .logout { background: none; border: none; color: var(--accent); cursor: pointer;
+    font-size: 12px; }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .cols { grid-template-columns: 1fr; }
+  }
+  .fadein { animation: rise .7s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>NotchBud Analytics</h1>
-    <p>Pageviews, referrers, countries, devices, and the download and buy-click event counts, all live. Sign in with your GoatCounter account.</p>
-    <a class="btn" href="https://notchbud.goatcounter.com">Open dashboard</a>
-    <p class="hint">Events: <b>download-dmg</b> and <b>buy-click</b> under "Pages".</p>
+<a class="wordmark" href="/">NotchBud</a>
+
+<div class="login" id="login">
+  <h1>Admin</h1>
+  <p>Paste your GoatCounter API token. It stays in this browser and talks only to your own analytics.</p>
+  <input id="token" type="password" placeholder="API token" autocomplete="off">
+  <button onclick="signIn()">Open dashboard</button>
+  <div class="err" id="err">That token did not validate. Check it and try again.</div>
+  <p class="hint">Create one at <a href="https://notchbud.goatcounter.com/user/api" target="_blank">GoatCounter → API</a> with "Read statistics" permission.</p>
+</div>
+
+<div class="wrap" id="dash">
+  <h1>Analytics</h1>
+  <p class="sub">notchbud.com · <button class="logout" onclick="signOut()">sign out</button></p>
+  <div class="rangebar" id="ranges"></div>
+  <div class="grid" id="tiles"></div>
+  <div class="panel fadein">
+    <h3>Views per day</h3>
+    <svg id="chart" preserveAspectRatio="none"></svg>
   </div>
+  <div class="cols">
+    <div class="panel fadein"><h3>Top referrers</h3><div id="refs"></div></div>
+    <div class="panel fadein"><h3>Countries</h3><div id="locs"></div></div>
+  </div>
+  <div class="panel fadein"><h3>Top pages</h3><div id="pages"></div></div>
+  <p class="foot">Raw dashboard: <a href="https://notchbud.goatcounter.com" target="_blank">notchbud.goatcounter.com</a></p>
+</div>
+
+<script>
+const API = 'https://notchbud.goatcounter.com/api/v0';
+let DAYS = 30;
+
+function authHeaders() {
+  return { 'Authorization': 'Bearer ' + localStorage.gcToken,
+           'Content-Type': 'application/json' };
+}
+
+async function gc(path, params) {
+  const q = new URLSearchParams(params || {}).toString();
+  const res = await fetch(API + path + (q ? '?' + q : ''), { headers: authHeaders() });
+  if (!res.ok) throw new Error('api ' + res.status);
+  return res.json();
+}
+
+function isoDay(d) { return d.toISOString().slice(0, 10); }
+function rangeParams(days) {
+  const end = new Date();
+  const start = new Date(Date.now() - (days - 1) * 864e5);
+  return { start: isoDay(start), end: isoDay(end) };
+}
+
+async function signIn() {
+  localStorage.gcToken = document.getElementById('token').value.trim();
+  try {
+    await gc('/me');
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    render();
+  } catch {
+    document.getElementById('err').style.display = 'block';
+    delete localStorage.gcToken;
+  }
+}
+
+function signOut() {
+  delete localStorage.gcToken;
+  location.reload();
+}
+
+function rows(el, items, label) {
+  const max = Math.max(1, ...items.map(i => i.count));
+  el.innerHTML = items.length ? items.map(i => {
+    const name = (label(i) || '(direct)').replace(/[<>&]/g, c =>
+      ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    const pct = Math.round(i.count / max * 100);
+    return '<div class="row" style="background: linear-gradient(90deg, rgba(166,164,200,.16) ' +
+      pct + '%, transparent ' + pct + '%)">' +
+      '<span class="n">' + name + '</span><span class="c">' + i.count + '</span></div>';
+  }).join('') : '<div class="row"><span class="n" style="color:var(--muted)">Nothing yet</span></div>';
+}
+
+async function render() {
+  const p = rangeParams(DAYS);
+
+  const ranges = [[7, '7 days'], [30, '30 days'], [90, '90 days']];
+  document.getElementById('ranges').innerHTML = ranges.map(([d, l]) =>
+    '<button class="range' + (d === DAYS ? ' on' : '') + '" onclick="DAYS=' + d +
+    ';render()">' + l + '</button>').join('');
+
+  // Sequential: GoatCounter rate-limits bursts.
+  const total = await gc('/stats/total', p);
+  const hits = await gc('/stats/hits', { ...p, limit: 12 });
+  const refs = await gc('/stats/toprefs', { ...p, limit: 8 });
+  const locs = await gc('/stats/locations', { ...p, limit: 8 });
+
+  const list = hits.hits || [];
+  const events = list.filter(h => h.event);
+  const pages = list.filter(h => !h.event);
+  const downloads = events.find(e => e.path === 'download-dmg');
+  const buys = events.find(e => e.path === 'buy-click');
+
+  const days = total.stats || [];
+  const todayKey = isoDay(new Date());
+  const today = days.find(d => (d.day || '').slice(0, 10) === todayKey);
+  const dayCount = d => d.daily != null ? d.daily
+    : (d.hourly || []).reduce((a, b) => a + b, 0);
+
+  document.getElementById('tiles').innerHTML = [
+    ['Views · ' + DAYS + 'd', total.total ?? days.reduce((a, d) => a + dayCount(d), 0)],
+    ['Today', today ? dayCount(today) : 0],
+    ['Downloads', downloads ? downloads.count : 0],
+    ['Buy clicks', buys ? buys.count : 0]
+  ].map(([k, v], i) =>
+    '<div class="tile fadein" style="animation-delay:' + i * 0.06 + 's">' +
+    '<div class="k">' + k + '</div><div class="v">' + v + '</div></div>').join('');
+
+  const svg = document.getElementById('chart');
+  const W = 900, H = 180;
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  const max = Math.max(1, ...days.map(dayCount));
+  const bw = W / Math.max(days.length, 1);
+  svg.innerHTML = days.map((d, i) => {
+    const h = Math.max(2, dayCount(d) / max * (H - 24));
+    return '<rect x="' + (i * bw + 1.5) + '" y="' + (H - h) + '" width="' +
+      Math.max(2, bw - 3) + '" height="' + h + '" rx="2"><title>' +
+      (d.day || '').slice(0, 10) + ': ' + dayCount(d) + '</title></rect>';
+  }).join('');
+
+  rows(document.getElementById('refs'), refs.stats || [], i => i.name || i.path);
+  rows(document.getElementById('locs'), locs.stats || [], i => i.name || i.path);
+  rows(document.getElementById('pages'), pages, i => i.path);
+}
+
+if (localStorage.gcToken) {
+  gc('/me').then(() => {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    render();
+  }).catch(() => delete localStorage.gcToken);
+}
+document.getElementById('token').addEventListener('keydown', e => {
+  if (e.key === 'Enter') signIn();
+});
+</script>
 </body>
 </html>
