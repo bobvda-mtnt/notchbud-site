@@ -986,9 +986,16 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches &&
     });
   });
 
+  const pinHero = () => document.querySelectorAll('.hero-copy > *')
+    .forEach(el => el.classList.add('risen'));
   document.querySelectorAll('.hero-copy > *').forEach(el => {
     el.addEventListener('animationend', () => el.classList.add('risen'));
   });
+  // Safety net: background tabs pause CSS animations, so animationend can
+  // never fire. Once the entrance window has passed, pin the hero no
+  // matter what actually played.
+  setTimeout(pinHero, 2400);
+  addEventListener('pageshow', e => { if (e.persisted) pinHero(); });
 
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
