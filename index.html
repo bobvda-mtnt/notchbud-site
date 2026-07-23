@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a7a6ce'/%3E%3Cstop offset='.3' stop-color='%23a5aec6'/%3E%3Cstop offset='.52' stop-color='%23c6d4c2'/%3E%3Cstop offset='.62' stop-color='%23cfdcc9'/%3E%3Cstop offset='.8' stop-color='%234e4950'/%3E%3Cstop offset='1' stop-color='%23170f16'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='23' fill='url(%23g)'/%3E%3Cpath d='M21 0 Q26 0 26 5 V15 Q26 20 31 20 H69 Q74 20 74 15 V5 Q74 0 79 0 Z' fill='%23000'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>NotchBud — Your AI's morning brief in your Mac's notch</title>
 <meta name="description" content="NotchBud turns the MacBook notch into a home for your AI's morning briefing and a living todo list. Claude, ChatGPT or any AI writes one markdown file a day; NotchBud shows it under your notch. One-time purchase, 14-day free trial.">
 <link rel="canonical" href="https://notchbud.com/">
@@ -514,6 +516,21 @@
   .tp.on { background: var(--text); color: #fff; transform: scale(1.07); }
   .tp .dot { width: 10px; height: 10px; border-radius: 50%; }
 
+  /* Hero blob: the tiny now-playing strip */
+  .hb-np { display: flex; gap: 9px; align-items: center; padding: 8px 10px; }
+  .hb-art { position: relative; width: 26px; height: 26px; border-radius: 6px; flex: none;
+    background: linear-gradient(135deg,#3a4a6b,#87a5b4 60%,#d9c8a9); overflow: hidden; }
+  .hb-eq { position: absolute; left: 0; right: 0; bottom: 3px;
+    display: flex; gap: 2px; justify-content: center; align-items: flex-end; height: 9px; }
+  .hb-eq b { width: 2.5px; height: 3px; background: rgba(255,255,255,.95);
+    border-radius: 1px; animation: eq 1s ease-in-out infinite; }
+  .hb-eq b:nth-child(2) { animation-delay: .18s; }
+  .hb-eq b:nth-child(3) { animation-delay: .36s; }
+  .hb-meta b { display: block; font-size: 11.5px; color: #f5f5f7; font-weight: 700; }
+  .hb-meta small { font-size: 10px; color: rgba(245,245,247,.5); }
+  .hb-ctrl { margin-left: auto; display: flex; gap: 9px; align-items: center; }
+  .hb-ctrl svg { width: 10px; height: 10px; fill: rgba(245,245,247,.7); }
+
   /* The reminders showcase: hold, fill, spring, release */
   .rem-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
   .rem-card {
@@ -805,6 +822,11 @@
         </div>
         <div class="bento"><div class="bt">💬 MENTIONS <span class="pill">4</span></div></div>
         <div class="bento"><div class="bt">👀 ON YOUR RADAR <span class="pill">2</span></div></div>
+        <div class="bento hb-np">
+          <span class="hb-art"><i class="hb-eq"><b></b><b></b><b></b></i></span>
+          <div class="hb-meta"><b>ノアノア</b><small>Shigeru Suzuki</small></div>
+          <span class="hb-ctrl"><svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5l11 7-11 7z"/></svg></span>
+        </div>
       </div>
       <div class="bento" style="margin-bottom:0">
         <div class="bt">✅ TODAY <span style="color:var(--green)" id="dcount">2/5</span></div>
@@ -855,18 +877,6 @@
   </div>
 </section>
 
-<section id="features" class="wrap centered">
-  <span class="kicker">Features</span>
-  <h2>A brief that keeps up with your progress.</h2>
-  <div class="grid">
-    <div class="feature"><span class="ico">✅</span><h3>Living todo list</h3><p>Your AI's action items become real todos. Check them off, drag to reorder. Done items sink, open ones carry over to tomorrow.</p></div>
-    <div class="feature"><span class="ico">⚡</span><h3>The feedback loop</h3><p>PRIO and CLEAR swipes are written back for your AI. Cleared topics stop appearing. Priorities lead tomorrow's brief. It learns.</p></div>
-    <div class="feature"><span class="ico">🍎</span><h3>Native &amp; featherlight</h3><p>Real SwiftUI, no Electron. Light on battery, instant on screen, with Dynamic-Island-grade springs on every interaction.</p></div>
-    <div class="feature"><span class="ico">🫳</span><h3>Drag to todo</h3><p>Drag any briefing item into your todo list. It stays linked: flag the todo and the brief item lights up too.</p></div>
-    <div class="feature"><span class="ico">🌙</span><h3>Evening recap</h3><p>A second AI run appends the end-of-day recap to the same card: what came in, what's still open, tomorrow's first three.</p></div>
-    <div class="feature"><span class="ico">🔒</span><h3>No servers. No account.</h3><p>Everything is markdown and JSON in a folder you own. NotchBud never sees your data. There is nothing to see it with.</p></div>
-  </div>
-</section>
 
 <section id="gesture" class="wrap">
   <div class="swipe-wrap">
@@ -891,6 +901,38 @@
       <div class="sd-row">
         <div class="sd-todo"><span class="c"></span><span>Reply to the venue quote</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="meetings" class="wrap">
+  <div class="meet-wrap">
+    <div class="meet-card" aria-hidden="true">
+      <div class="meet-note" id="meetNote">
+        <span class="mn-icon"></span>
+        <span class="mn-text"><b>Design review</b>Starts in 15 minutes — tap to join</span>
+      </div>
+      <div class="sd-title">📅 SCHEDULE</div>
+      <div class="meet-row">
+        <span class="meet-ico">📅</span>
+        <div class="meet-meta">
+          <div class="meet-title">Design review with Manou</div>
+          <div class="meet-time">14:30 · <span id="meetMins">in 17m</span></div>
+        </div>
+        <span class="meet-join" id="meetJoin"><svg viewBox="0 0 24 24"><path d="M2 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm15 3.5 5-3.5v10l-5-3.5v-3z"/></svg>Join</span>
+      </div>
+      <div class="meet-row dim">
+        <span class="meet-ico">📅</span>
+        <div class="meet-meta">
+          <div class="meet-title">Client call — Keytrade</div>
+          <div class="meet-time">16:00 · in 1h 47m</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="kicker">Meetings</span>
+      <h2>Never hunt for<br>the join link again.</h2>
+      <p class="lead">Your next meeting lives in the notch with a live countdown. Fifteen minutes out, NotchBud pings you and the Join button lights up green: one click drops you into Zoom, Meet, or Teams. No calendar tab, no digging through invites, no walking in late.</p>
     </div>
   </div>
 </section>
@@ -948,37 +990,6 @@
   </div>
 </section>
 
-<section id="meetings" class="wrap">
-  <div class="meet-wrap">
-    <div class="meet-card" aria-hidden="true">
-      <div class="meet-note" id="meetNote">
-        <span class="mn-icon"></span>
-        <span class="mn-text"><b>Design review</b>Starts in 15 minutes — tap to join</span>
-      </div>
-      <div class="sd-title">📅 SCHEDULE</div>
-      <div class="meet-row">
-        <span class="meet-ico">📅</span>
-        <div class="meet-meta">
-          <div class="meet-title">Design review with Manou</div>
-          <div class="meet-time">14:30 · <span id="meetMins">in 17m</span></div>
-        </div>
-        <span class="meet-join" id="meetJoin"><svg viewBox="0 0 24 24"><path d="M2 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm15 3.5 5-3.5v10l-5-3.5v-3z"/></svg>Join</span>
-      </div>
-      <div class="meet-row dim">
-        <span class="meet-ico">📅</span>
-        <div class="meet-meta">
-          <div class="meet-title">Client call — Keytrade</div>
-          <div class="meet-time">16:00 · in 1h 47m</div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <span class="kicker">Meetings</span>
-      <h2>Never hunt for<br>the join link again.</h2>
-      <p class="lead">Your next meeting lives in the notch with a live countdown. Fifteen minutes out, NotchBud pings you and the Join button lights up green: one click drops you into Zoom, Meet, or Teams. No calendar tab, no digging through invites, no walking in late.</p>
-    </div>
-  </div>
-</section>
 
 <section id="music" class="wrap">
   <div class="mus-wrap">
@@ -1064,6 +1075,19 @@ Write one markdown file per day into the NotchBud folder.
     <details><summary>Will it fill up my disk?</summary><p>No. NotchBud keeps 30 days of briefings and automatically expires stale flags. A full year of daily use is a few hundred kilobytes.</p></details>
     <details><summary>What happens after the trial?</summary><p>NotchBud asks for a license. Your briefings and todos stay untouched in your folder either way. It is your data.</p></details>
     <details><summary>Is there an iPhone app?</summary><p>In development: a companion app with home-screen widgets that syncs your todos through your own iCloud. It will be free for license holders when it ships.</p></details>
+  </div>
+</section>
+
+<section id="features" class="wrap centered">
+  <span class="kicker">Features</span>
+  <h2>A brief that keeps up with your progress.</h2>
+  <div class="grid">
+    <div class="feature"><span class="ico">✅</span><h3>Living todo list</h3><p>Your AI's action items become real todos. Check them off, drag to reorder. Done items sink, open ones carry over to tomorrow.</p></div>
+    <div class="feature"><span class="ico">⚡</span><h3>The feedback loop</h3><p>PRIO and CLEAR swipes are written back for your AI. Cleared topics stop appearing. Priorities lead tomorrow's brief. It learns.</p></div>
+    <div class="feature"><span class="ico">🍎</span><h3>Native &amp; featherlight</h3><p>Real SwiftUI, no Electron. Light on battery, instant on screen, with Dynamic-Island-grade springs on every interaction.</p></div>
+    <div class="feature"><span class="ico">🫳</span><h3>Drag to todo</h3><p>Drag any briefing item into your todo list. It stays linked: flag the todo and the brief item lights up too.</p></div>
+    <div class="feature"><span class="ico">🌙</span><h3>Evening recap</h3><p>A second AI run appends the end-of-day recap to the same card: what came in, what's still open, tomorrow's first three.</p></div>
+    <div class="feature"><span class="ico">🔒</span><h3>No servers. No account.</h3><p>Everything is markdown and JSON in a folder you own. NotchBud never sees your data. There is nothing to see it with.</p></div>
   </div>
 </section>
 
