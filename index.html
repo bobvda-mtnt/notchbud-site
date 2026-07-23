@@ -584,6 +584,121 @@
   .rem-card.choosing .rem-opt:nth-child(5) { transition-delay: .2s; }
   .rem-opt.hl { background: rgba(255,255,255,.14); }
 
+  /* The meetings showcase: countdown ticks, Join lights up, macOS pings */
+  .meet-wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
+  .meet-card {
+    position: relative;
+    background: #131317; border-radius: 24px; padding: 18px 16px;
+    width: 100%; max-width: 400px; justify-self: center;
+    box-shadow: 0 30px 80px rgba(20,20,30,.18);
+  }
+  .meet-row {
+    display: flex; gap: 10px; align-items: center;
+    background: rgba(255,255,255,.07); border-radius: 12px;
+    padding: 11px 12px; margin-top: 6px;
+  }
+  .meet-row.dim { opacity: .55; }
+  .meet-ico { font-size: 13px; flex: none; }
+  .meet-meta { min-width: 0; flex: 1; }
+  .meet-title { font-size: 12.5px; font-weight: 600; color: #f5f5f7;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .meet-time { font-size: 11px; color: rgba(245,245,247,.5);
+    font-variant-numeric: tabular-nums; }
+  .meet-join {
+    display: inline-flex; align-items: center; gap: 5px; flex: none;
+    font-size: 11px; font-weight: 700; color: rgba(245,245,247,.8);
+    background: rgba(255,255,255,.12); border-radius: 99px;
+    padding: 5px 12px;
+    transition: background .45s ease, color .45s ease,
+                transform .5s cubic-bezier(.32, 1.16, .45, 1);
+  }
+  .meet-join svg { width: 11px; height: 11px; fill: currentColor; }
+  .meet-join.go {
+    background: #30d158; color: #06210f;
+    transform: scale(1.12);
+  }
+  .meet-note {
+    position: absolute; top: -26px; right: -14px; z-index: 3;
+    display: flex; gap: 9px; align-items: center;
+    background: rgba(40,40,46,.96); border-radius: 14px;
+    padding: 10px 14px 10px 10px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.09);
+    opacity: 0; transform: translateY(-14px) scale(.94);
+    pointer-events: none;
+    transition: opacity .35s ease, transform .55s cubic-bezier(.32, 1.16, .45, 1);
+  }
+  .meet-note.show { opacity: 1; transform: none; }
+  .mn-icon {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: linear-gradient(180deg,#a7a6ce,#c6d4c2 55%,#170f16);
+  }
+  .mn-text { font-size: 10.5px; color: rgba(245,245,247,.65); line-height: 1.35; }
+  .mn-text b { display: block; font-size: 11.5px; color: #f5f5f7; }
+
+  /* The now-playing showcase: EQ breathes, tracks swap, YouTube joins in */
+  .mus-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+  .mus-card {
+    background: #131317; border-radius: 24px; padding: 18px 16px;
+    width: 100%; max-width: 400px; justify-self: center;
+    box-shadow: 0 30px 80px rgba(20,20,30,.18);
+  }
+  .mus-strip {
+    display: flex; gap: 11px; align-items: center;
+    background: rgba(255,255,255,.07); border-radius: 12px;
+    padding: 9px 12px; margin-top: 6px;
+  }
+  .mus-art {
+    position: relative; width: 40px; height: 40px; border-radius: 8px; flex: none;
+    background: linear-gradient(135deg,#3a4a6b,#87a5b4 60%,#d9c8a9);
+    overflow: hidden;
+    transition: background .5s ease, transform .5s cubic-bezier(.32, 1.16, .45, 1);
+  }
+  .mus-strip.alt .mus-art { background: linear-gradient(135deg,#5b2a3c,#b45f6f 55%,#e8c39e); }
+  .mus-strip.yt .mus-art { background: linear-gradient(135deg,#1d1d21,#3a3a40); }
+  .mus-art .yt-play {
+    position: absolute; inset: 0; margin: auto; width: 16px; height: 12px;
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .mus-strip.yt .mus-art .yt-play { opacity: 1; }
+  .mus-eq {
+    position: absolute; left: 0; right: 0; bottom: 5px;
+    display: flex; gap: 2.5px; justify-content: center; align-items: flex-end;
+    height: 12px; transition: opacity .3s ease;
+  }
+  .mus-eq i { width: 3px; background: rgba(255,255,255,.95); border-radius: 2px;
+    height: 4px; }
+  .mus-strip.playing .mus-eq i { animation: eq 1s ease-in-out infinite; }
+  .mus-strip.playing .mus-eq i:nth-child(2) { animation-delay: .18s; }
+  .mus-strip.playing .mus-eq i:nth-child(3) { animation-delay: .36s; }
+  .mus-strip.yt .mus-eq { opacity: 0; }
+  @keyframes eq {
+    0%, 100% { height: 4px; } 35% { height: 11px; } 70% { height: 6px; }
+  }
+  .mus-meta { min-width: 0; flex: 1; }
+  .mus-title { font-size: 12.5px; font-weight: 700; color: #f5f5f7;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mus-artist { font-size: 11px; color: rgba(245,245,247,.5); }
+  .mus-meta.swap .mus-title, .mus-meta.swap .mus-artist {
+    animation: trackswap .55s cubic-bezier(.32, 1.16, .45, 1);
+  }
+  @keyframes trackswap {
+    0% { opacity: 0; transform: translateY(9px); }
+    100% { opacity: 1; transform: none; }
+  }
+  .mus-ctrl { display: flex; gap: 4px; flex: none; transition: opacity .35s ease; }
+  .mus-strip.yt .mus-ctrl { opacity: 0; }
+  .mus-ctrl span {
+    display: grid; place-items: center; width: 24px; height: 24px;
+    color: rgba(245,245,247,.65);
+    transition: transform .35s cubic-bezier(.32, 1.16, .45, 1), color .3s ease;
+  }
+  .mus-ctrl span svg { width: 12px; height: 12px; fill: currentColor; }
+  .mus-ctrl span.pop { transform: scale(1.35); color: #fff; }
+  .mus-hint {
+    font-size: 11px; color: rgba(245,245,247,.4); margin-top: 12px;
+    text-align: center; transition: opacity .3s ease;
+  }
+
   /* Scroll reveals: rise + de-blur on a bounce-0 spring, like the references */
   @media (prefers-reduced-motion: no-preference) {
     .r { opacity: 0; transform: translateY(30px); filter: blur(10px);
@@ -597,6 +712,8 @@
     .swipe-wrap > *:nth-child(2) { transition-delay: .18s; }
     .theme-wrap > *:nth-child(2) { transition-delay: .14s; }
     .rem-wrap > *:nth-child(2) { transition-delay: .14s; }
+    .meet-wrap > *:nth-child(2) { transition-delay: .14s; }
+    .mus-wrap > *:nth-child(2) { transition-delay: .14s; }
     section .lead { transition-delay: .1s; }
     .faq details:nth-child(2) { transition-delay: .08s; }
     .faq details:nth-child(3) { transition-delay: .16s; }
@@ -656,6 +773,9 @@
     .theme-wrap { grid-template-columns: 1fr; gap: 32px; }
     .theme-wrap .theme-card { order: 2; }
     .rem-wrap { grid-template-columns: 1fr; gap: 32px; }
+    .meet-wrap { grid-template-columns: 1fr; gap: 32px; }
+    .meet-wrap .meet-card { order: 2; }
+    .mus-wrap { grid-template-columns: 1fr; gap: 32px; }
     .nc-cols { grid-template-columns: 1fr; }
     .mb-left a:not(.app) { display: none; }
   }
@@ -824,6 +944,67 @@
         <div class="rem-opt">Tomorrow at 9:00</div>
         <div class="rem-opt">Custom…</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="meetings" class="wrap">
+  <div class="meet-wrap">
+    <div class="meet-card" aria-hidden="true">
+      <div class="meet-note" id="meetNote">
+        <span class="mn-icon"></span>
+        <span class="mn-text"><b>Design review</b>Starts in 15 minutes — tap to join</span>
+      </div>
+      <div class="sd-title">📅 SCHEDULE</div>
+      <div class="meet-row">
+        <span class="meet-ico">📅</span>
+        <div class="meet-meta">
+          <div class="meet-title">Design review with Manou</div>
+          <div class="meet-time">14:30 · <span id="meetMins">in 17m</span></div>
+        </div>
+        <span class="meet-join" id="meetJoin"><svg viewBox="0 0 24 24"><path d="M2 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm15 3.5 5-3.5v10l-5-3.5v-3z"/></svg>Join</span>
+      </div>
+      <div class="meet-row dim">
+        <span class="meet-ico">📅</span>
+        <div class="meet-meta">
+          <div class="meet-title">Client call — Keytrade</div>
+          <div class="meet-time">16:00 · in 1h 47m</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="kicker">Meetings</span>
+      <h2>Never hunt for<br>the join link again.</h2>
+      <p class="lead">Your next meeting lives in the notch with a live countdown. Fifteen minutes out, NotchBud pings you and the Join button lights up green: one click drops you into Zoom, Meet, or Teams. No calendar tab, no digging through invites, no walking in late.</p>
+    </div>
+  </div>
+</section>
+
+<section id="music" class="wrap">
+  <div class="mus-wrap">
+    <div>
+      <span class="kicker">Now Playing</span>
+      <h2>Your soundtrack,<br>one glance up.</h2>
+      <p class="lead">Spotify, Apple Music, even YouTube playing in Chrome: whatever is on shows up under your brief with artwork and controls. Click the cover and you're in the app, or on the exact tab, instantly.</p>
+    </div>
+    <div class="mus-card" aria-hidden="true">
+      <div class="sd-title">🎧 NOW PLAYING</div>
+      <div class="mus-strip playing" id="musStrip">
+        <div class="mus-art">
+          <svg class="yt-play" viewBox="0 0 24 17"><path d="M23.5 2.6A3 3 0 0 0 21.4.5C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 0 0 .5 2.6 31 31 0 0 0 0 8.5a31 31 0 0 0 .5 5.9 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-5.9 31 31 0 0 0-.5-5.9z" fill="#f33"/><path d="M9.5 12.1 15.8 8.5 9.5 4.9z" fill="#fff"/></svg>
+          <span class="mus-eq"><i></i><i></i><i></i></span>
+        </div>
+        <div class="mus-meta" id="musMeta">
+          <div class="mus-title" id="musTitle">HABITS</div>
+          <div class="mus-artist" id="musArtist">Rumari</div>
+        </div>
+        <div class="mus-ctrl" id="musCtrl">
+          <span><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5l-11 7 11 7z"/></svg></span>
+          <span id="musPlay"><svg viewBox="0 0 24 24"><path id="musPlayPath" d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></span>
+          <span><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5l11 7-11 7z"/></svg></span>
+        </div>
+      </div>
+      <div class="mus-hint" id="musHint">click the cover → the app opens</div>
     </div>
   </div>
 </section>
@@ -1013,7 +1194,7 @@ if (!isMobileDemo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 // Scroll reveals
 const revealEls = document.querySelectorAll(
-  '.kicker, h2, .lead, .step, .feature, .snippet-box, .price-box, .faq details, .swipe-wrap > *, .theme-wrap > *, .rem-wrap > *');
+  '.kicker, h2, .lead, .step, .feature, .snippet-box, .price-box, .faq details, .swipe-wrap > *, .theme-wrap > *, .rem-wrap > *, .meet-wrap > *, .mus-wrap > *');
 revealEls.forEach(el => el.classList.add('r'));
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -1289,6 +1470,74 @@ if (remCard && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   setInterval(remLoop, 7200);
 } else if (remCard) {
   remCard.classList.add('ringed');
+}
+
+// The meetings showcase: minutes tick down, Join lights green, macOS pings.
+const meetJoin = document.getElementById('meetJoin');
+if (meetJoin && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const mins = document.getElementById('meetMins');
+  const note = document.getElementById('meetNote');
+  function meetLoop() {
+    mins.textContent = 'in 17m';
+    meetJoin.classList.remove('go');
+    note.classList.remove('show');
+    setTimeout(() => { mins.textContent = 'in 16m'; }, 1500);
+    setTimeout(() => {                       // 15 minutes out: it's time
+      mins.textContent = 'in 15m';
+      meetJoin.classList.add('go');
+      note.classList.add('show');
+    }, 3000);
+    setTimeout(() => note.classList.remove('show'), 7200);
+  }
+  meetLoop();
+  setInterval(meetLoop, 8600);
+} else if (meetJoin) {
+  meetJoin.classList.add('go');
+}
+
+// The now-playing showcase: EQ breathes, a skip swaps the track, then a
+// YouTube tab takes the stage.
+const musStrip = document.getElementById('musStrip');
+if (musStrip && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const meta = document.getElementById('musMeta');
+  const title = document.getElementById('musTitle');
+  const artist = document.getElementById('musArtist');
+  const hint = document.getElementById('musHint');
+  const play = document.getElementById('musPlay');
+  const ctrl = document.getElementById('musCtrl').children;
+  function swapTo(t, a) {
+    meta.classList.remove('swap');
+    void meta.offsetWidth;               // restart the swap animation
+    title.textContent = t;
+    artist.textContent = a;
+    meta.classList.add('swap');
+  }
+  function pop(el) {
+    el.classList.add('pop');
+    setTimeout(() => el.classList.remove('pop'), 380);
+  }
+  function musLoop() {
+    musStrip.classList.remove('yt', 'alt');
+    musStrip.classList.add('playing');
+    swapTo('HABITS', 'Rumari');
+    hint.textContent = 'click the cover → the app opens';
+    setTimeout(() => {                   // skip: next track slides in
+      pop(ctrl[2]);
+      musStrip.classList.add('alt');
+      swapTo('Golden Hour', 'Távros');
+    }, 2600);
+    setTimeout(() => {                   // pause: the bars go still
+      pop(play);
+      musStrip.classList.remove('playing');
+    }, 5200);
+    setTimeout(() => {                   // YouTube in Chrome joins the party
+      musStrip.classList.add('yt', 'playing');
+      swapTo('Deep Focus — 3 hours', 'YouTube');
+      hint.textContent = 'click the cover → jumps to the exact Chrome tab';
+    }, 6400);
+  }
+  musLoop();
+  setInterval(musLoop, 10400);
 }
 
 function copySnippet(btn) {
