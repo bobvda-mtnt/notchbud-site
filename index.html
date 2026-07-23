@@ -516,6 +516,19 @@
   .tp.on { background: var(--text); color: #fff; transform: scale(1.07); }
   .tp .dot { width: 10px; height: 10px; border-radius: 50%; }
 
+  /* Hero blob: next meeting with Join */
+  .hb-meet { display: flex; gap: 9px; align-items: center; padding: 8px 10px; }
+  .hb-mico { font-size: 12px; flex: none; }
+  .hb-mmeta { min-width: 0; flex: 1; }
+  .hb-mmeta b { display: block; font-size: 11.5px; color: #f5f5f7; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hb-mmeta small { font-size: 10px; color: rgba(245,245,247,.5);
+    font-variant-numeric: tabular-nums; }
+  .hb-join { display: inline-flex; align-items: center; gap: 4px; flex: none;
+    font-size: 10.5px; font-weight: 700; color: #06210f;
+    background: #30d158; border-radius: 99px; padding: 4px 11px; }
+  .hb-join svg { width: 10px; height: 10px; fill: currentColor; }
+
   /* Hero blob: the tiny now-playing strip */
   .hb-np { display: flex; gap: 9px; align-items: center; padding: 8px 10px; }
   .hb-art { position: relative; width: 26px; height: 26px; border-radius: 6px; flex: none;
@@ -811,6 +824,11 @@
     </div>
     <div class="nc-cols">
       <div>
+        <div class="bento hb-meet">
+          <span class="hb-mico">📅</span>
+          <div class="hb-mmeta"><b>Design review with Sam</b><small>14:30 · in 15m</small></div>
+          <span class="hb-join"><svg viewBox="0 0 24 24"><path d="M2 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm15 3.5 5-3.5v10l-5-3.5v-3z"/></svg>Join</span>
+        </div>
         <div class="bento">
           <div class="bt">🗓 TODAY'S SCHEDULE</div>
           <div style="font-size:12px;color:rgba(245,245,247,.85)">One meeting: design review at 11:00. <b>Big goal:</b> ship the spring update today.</div>
@@ -855,6 +873,7 @@
       <span class="hl"><span class="l1">Every todo</span><span class="dim">one swipe away</span></span>
       <span class="hl"><span class="l1">Your morning</span><span class="dim">briefed before it starts</span></span>
       <span class="hl"><span class="l1">Stay on top of your todo list</span><span class="dim">by keeping it at the top</span></span>
+      <span class="hl"><span class="l1">Never hunt for</span><span class="dim">the join link again</span></span>
     </h1>
     <p class="sub">Always at the top of your screen, and of your day. Your AI writes the morning brief. NotchBud gives it a place to live.</p>
     <div class="app-lockup">
@@ -1170,6 +1189,14 @@ addEventListener('mousemove', e => {
 document.documentElement.addEventListener('mouseleave', () => {
   if (notchOpen && !teasing) closeNotch(120);
 });
+
+// Belt and braces: geometry can miss on zoomed or oddly sized
+// viewports, but the element itself always knows when it's entered.
+if (matchMedia('(hover: hover)').matches) {
+  notchEl.addEventListener('mouseenter', () => {
+    if (!notchOpen) openNotch(true);
+  });
+}
 
 // Touch devices have no hover: tap toggles.
 notchEl.addEventListener('click', () => {
