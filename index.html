@@ -557,29 +557,45 @@
   .clockface b { font-weight: 700; }
   .clockface em { position: absolute; top: 10px; right: 12px; width: 7px;
     height: 7px; border-radius: 50%; background: #ff9500; }
-  .mini-swipe { position: relative; width: 100%; max-width: 250px; height: 42px; }
-  .ms-hints { position: absolute; inset: 0; border-radius: 11px;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 11px; overflow: hidden;
-    background: linear-gradient(90deg, #ff9500 0%, #ff9500 45%, #ff3b30 55%, #ff3b30 100%); }
-  .ms-hints em { font-style: normal; font-size: 10px; font-weight: 800;
-    color: rgba(0,0,0,.75); }
-  .ms-hints strong { font-size: 13px; }
-  .ms-row { position: absolute; inset: 0; background: #131317; color: #f5f5f7;
-    border-radius: 11px; display: flex; gap: 9px; align-items: center;
-    padding: 0 13px; font-size: 12.5px; }
-  .ms-c { width: 15px; height: 15px; border: 1.5px solid rgba(255,255,255,.4);
-    border-radius: 50%; flex: none; }
+  .mini-todos { display: flex; flex-direction: column; gap: 6px;
+    width: 100%; max-width: 250px; }
+  .mt-row { display: flex; gap: 9px; align-items: center; background: #131317;
+    border-radius: 10px; padding: 8px 12px; font-size: 12px; color: #f5f5f7; }
+  .mt-row i { position: relative; width: 15px; height: 15px; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,.4); flex: none; display: grid;
+    place-items: center; }
+  .mt-row i::after { content: "✓"; font-size: 9px; font-weight: 700;
+    color: #fff; opacity: 0; }
+  .mt-row b { position: relative; font-weight: 500; white-space: nowrap; }
+  .mt-row b u { position: absolute; left: 0; top: 50%; height: 1.5px;
+    width: 100%; background: #f5f5f7; opacity: .6; transform: scaleX(0);
+    transform-origin: left; }
+
   @media (prefers-reduced-motion: no-preference) {
     .clockface b { animation: clockblink 2s steps(1) infinite; }
     @keyframes clockblink { 50% { opacity: .2; } }
-    .ms-row { animation: stepswipe 5.5s cubic-bezier(.32, 1.16, .45, 1) infinite; }
-    @keyframes stepswipe {
-      0%, 12% { transform: none; }
-      22%, 34% { transform: translateX(72px); }
-      44%, 56% { transform: none; }
-      66%, 78% { transform: translateX(-72px); }
-      88%, 100% { transform: none; }
+    .mt-row i { animation: mtcheck 7.5s ease infinite; }
+    .mt-row i::after { animation: mtmark 7.5s ease infinite; }
+    .mt-row b { animation: mtdim 7.5s ease infinite; }
+    .mt-row b u { animation: mtstrike 7.5s cubic-bezier(.32, 1.16, .45, 1) infinite; }
+    .mt-row.d1 i, .mt-row.d1 i::after, .mt-row.d1 b, .mt-row.d1 b u {
+      animation-delay: 2.5s; }
+    .mt-row.d2 i, .mt-row.d2 i::after, .mt-row.d2 b, .mt-row.d2 b u {
+      animation-delay: 5s; }
+    @keyframes mtcheck {
+      0%, 8% { background: transparent; border-color: rgba(255,255,255,.4); }
+      13%, 72% { background: #30d158; border-color: #30d158; }
+      82%, 100% { background: transparent; border-color: rgba(255,255,255,.4); }
+    }
+    @keyframes mtmark {
+      0%, 8% { opacity: 0; } 13%, 72% { opacity: 1; } 82%, 100% { opacity: 0; }
+    }
+    @keyframes mtdim {
+      0%, 8% { opacity: 1; } 13%, 72% { opacity: .45; } 82%, 100% { opacity: 1; }
+    }
+    @keyframes mtstrike {
+      0%, 8% { transform: scaleX(0); } 13%, 72% { transform: scaleX(1); }
+      82%, 100% { transform: scaleX(0); }
     }
   }
 
@@ -981,11 +997,12 @@
       <div class="step-art" aria-hidden="true">
         <span class="clockface">07<b>:</b>00<em></em></span>
       </div></div>
-    <div class="step"><span class="n">03</span><h3>Swipe to prioritize or delete</h3><p>Your todos live in the card too: swipe right to flag a priority, left to delete. Your AI reads every swipe and writes a smarter brief tomorrow.</p>
+    <div class="step"><span class="n">03</span><h3>Stay on top of your tasks</h3><p>Your todos live one hover away, all day. Check things off as you go: whatever is left rolls into tomorrow's brief automatically.</p>
       <div class="step-art" aria-hidden="true">
-        <span class="mini-swipe">
-          <span class="ms-hints"><em>⚡ PRIO</em><strong>🗑</strong></span>
-          <span class="ms-row"><span class="ms-c"></span>Reply to the venue quote</span>
+        <span class="mini-todos">
+          <span class="mt-row d0"><i></i><b>Approve the print proof<u></u></b></span>
+          <span class="mt-row d1"><i></i><b>Reply to the venue quote<u></u></b></span>
+          <span class="mt-row d2"><i></i><b>Prep the 11:00 review<u></u></b></span>
         </span>
       </div></div>
   </div>
