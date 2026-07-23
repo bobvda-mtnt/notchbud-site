@@ -356,12 +356,20 @@
 
   #pricing.wrap { padding-top: 90px; padding-bottom: 96px; }
   #pricing .lead { font-size: 16px; }
+  .price-cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    max-width: 920px; margin: 40px auto 0;
+  }
   .price-box {
-    position: relative; max-width: 540px; margin: 40px auto 0;
-    background: #fff; border-radius: 32px; padding: 58px 40px 32px;
+    position: relative;
+    background: #fff; border-radius: 32px; padding: 36px 36px 30px;
     border: 1px solid var(--border);
     box-shadow: 0 30px 90px rgba(20,20,30,.1);
+    display: flex; flex-direction: column;
   }
+  .price-box .btn.big { margin-top: auto; }
+  .pc-title { font-size: 15px; font-weight: 700; color: var(--muted);
+    letter-spacing: .01em; margin: 0; }
   .pb-tab {
     position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 9px; white-space: nowrap;
@@ -794,6 +802,7 @@
     .swipe-wrap > *:nth-child(2) { transition-delay: .18s; }
     .theme-wrap > *:nth-child(2) { transition-delay: .14s; }
     .rem-wrap > *:nth-child(2) { transition-delay: .14s; }
+    .price-cols > *:nth-child(2) { transition-delay: .12s; }
     .meet-wrap > *:nth-child(2) { transition-delay: .14s; }
     .mus-wrap > *:nth-child(2) { transition-delay: .14s; }
     section .lead { transition-delay: .1s; }
@@ -849,7 +858,8 @@
     }
     .m-hero-shot .bento { opacity: 1 !important; transform: none !important; }
     .steps, .grid { grid-template-columns: 1fr; }
-    .price-box { padding: 66px 22px 34px; }
+    .price-cols { grid-template-columns: 1fr; gap: 18px; }
+    .price-box { padding: 30px 22px 26px; }
     .pb-tab { font-size: 12.5px; padding: 11px 16px 13px; }
     .swipe-wrap { grid-template-columns: 1fr; gap: 32px; }
     .theme-wrap { grid-template-columns: 1fr; gap: 32px; }
@@ -1131,23 +1141,33 @@ Write one markdown file per day into the NotchBud folder.
 
 <section id="pricing" class="wrap centered">
   <span class="kicker">Pricing</span>
-  <h2>Download free.<br>Keep it forever.</h2>
-  <p class="lead">Every feature, free for 14 days. No card, no account: just download. If it earns its place on your screen, keep it forever for less than a lunch.</p>
-  <div class="price-box">
-    <div class="pb-tab"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="nbtab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a7a6ce"/><stop offset=".3" stop-color="#a5aec6"/><stop offset=".52" stop-color="#c6d4c2"/><stop offset=".62" stop-color="#cfdcc9"/><stop offset=".8" stop-color="#4e4950"/><stop offset="1" stop-color="#170f16"/></linearGradient></defs><rect width="100" height="100" rx="23" fill="url(#nbtab)"/><path d="M21 0 Q26 0 26 5 V15 Q26 20 31 20 H69 Q74 20 74 15 V5 Q74 0 79 0 Z" fill="#000"/></svg> NotchBud app for macOS</div>
-    <div class="pb-price pb-free">Download for free</div>
-    <div class="pb-note">Every feature, free for 14 days</div>
-    <div class="pb-then">then <span class="strike">€29</span> <b>€14</b> <small>once</small> · early-bird price</div>
-    <ul class="pb-list">
-      <li>Full app free for 14 days, nothing to enter</li>
-      <li>One €14 payment unlocks it forever</li>
-      <li>All 1.x updates included</li>
-      <li>Morning brief, evening recap, feedback loop</li>
-      <li>Native macOS app, featherlight</li>
-      <li>Use on all your own Macs</li>
-    </ul>
-    <a class="btn big" href="/NotchBud.dmg"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.7-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> Download for macOS</a>
-    <div class="pb-sub">Free for 14 days, then <a href="https://buy.polar.sh/polar_cl_a6LL1vbPlXafFiHld67d20UAyIfV7MwnfmJzQ2iKwUq" style="color:var(--accent);font-weight:600">buy for €14</a>. License key lands in your inbox instantly.</div>
+  <h2>Free download.</h2>
+  <p class="lead">Use everything free for 14 days, or make it yours right away. One price, once, no subscription.</p>
+  <div class="price-cols">
+    <div class="price-box">
+      <h4 class="pc-title">Try it free</h4>
+      <div class="pb-price pb-free">14 days</div>
+      <div class="pb-note">Every feature, nothing to enter</div>
+      <ul class="pb-list">
+        <li>Full app: no card, no account</li>
+        <li>Morning brief, evening recap, feedback loop</li>
+        <li>Native macOS app, featherlight</li>
+      </ul>
+      <a class="btn big" href="/NotchBud.dmg"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.7-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> Download for macOS</a>
+      <div class="pb-sub">Notarized by Apple. Running in one minute.</div>
+    </div>
+    <div class="price-box">
+      <h4 class="pc-title">Or unlock it now</h4>
+      <div class="pb-price"><span class="strike">€29</span>€14<small>once</small></div>
+      <div class="pb-note">Early-bird price</div>
+      <ul class="pb-list">
+        <li>Yours forever, all 1.x updates included</li>
+        <li>License key in your inbox instantly</li>
+        <li>Use on all your own Macs</li>
+      </ul>
+      <a class="btn big" href="https://buy.polar.sh/polar_cl_a6LL1vbPlXafFiHld67d20UAyIfV7MwnfmJzQ2iKwUq">Buy NotchBud</a>
+      <div class="pb-sub">Works before, during, or after the trial.</div>
+    </div>
   </div>
 </section>
 
