@@ -152,9 +152,12 @@ async function gc(path, params) {
   throw new Error('rate limited');
 }
 
-function isoDay(d) { return d.toISOString().slice(0, 10); }
+function isoDay(d) { return d.toLocaleDateString('sv'); }
 function rangeParams(days) {
-  const end = new Date();
+  // GoatCounter reads a bare date as midnight at the START of that day,
+  // so "end = today" silently drops everything since midnight. End on
+  // tomorrow to keep the current day inside the range.
+  const end = new Date(Date.now() + 864e5);
   const start = new Date(Date.now() - (days - 1) * 864e5);
   return { start: isoDay(start), end: isoDay(end) };
 }
@@ -213,7 +216,7 @@ async function renderInner() {
   // Paced sequential calls: GoatCounter allows ~4 requests per second.
   const total = await gc('/stats/total', p);
   await sleep(320);
-  const hits = await gc('/stats/hits', { ...p, limit: 12 });
+  const hits = await gc('/stats/hits', { ...p, limit: 25 });
   await sleep(320);
   const refs = await gc('/stats/toprefs', { ...p, limit: 8 });
   await sleep(320);
@@ -225,8 +228,9 @@ async function renderInner() {
   const downloads = events.find(e => e.path === 'download-dmg');
   const buys = events.find(e => e.path === 'buy-click');
 
-  const days = total.stats || [];
   const todayKey = isoDay(new Date());
+  // The range ends on tomorrow (see rangeParams); drop that empty bucket.
+  const days = (total.stats || []).filter(d => (d.day || '').slice(0, 10) <= todayKey);
   const today = days.find(d => (d.day || '').slice(0, 10) === todayKey);
   const dayCount = d => d.daily != null ? d.daily
     : (d.hourly || []).reduce((a, b) => a + b, 0);
