@@ -1315,6 +1315,16 @@ Write one markdown file per day into the NotchBud folder.
   </div>
 </footer>
 
+<div id="macsheet" role="dialog" aria-modal="true" aria-label="NotchBud is a Mac app">
+  <div class="macsheet-card">
+    <h3>NotchBud is a Mac app 💻</h3>
+    <p>You're on a phone or tablet right now. Send yourself the link and install it on your Mac in one minute.</p>
+    <button class="btn grad" id="macshare">Send link to my Mac</button>
+    <button class="btn grey" id="maccopy">Copy link</button>
+    <button class="macsheet-close" id="macclose">Close</button>
+  </div>
+</div>
+
 <script>
 // The notch interaction: hover to drop the card, leave to retract.
 const notchEl = document.getElementById('notch');
@@ -1854,15 +1864,6 @@ document.getElementById('maccopy').addEventListener('click', (e) => {
 document.querySelectorAll('a[href*="buy.polar.sh"]').forEach(a =>
   a.addEventListener('click', () => gcEvent('buy-click')));
 </script>
-<div id="macsheet" role="dialog" aria-modal="true" aria-label="NotchBud is a Mac app">
-  <div class="macsheet-card">
-    <h3>NotchBud is a Mac app 💻</h3>
-    <p>You're on a phone or tablet right now. Send yourself the link and install it on your Mac in one minute.</p>
-    <button class="btn grad" id="macshare">Send link to my Mac</button>
-    <button class="btn grey" id="maccopy">Copy link</button>
-    <button class="macsheet-close" id="macclose">Close</button>
-  </div>
-</div>
 
 <script data-goatcounter="https://notchbud.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script>
