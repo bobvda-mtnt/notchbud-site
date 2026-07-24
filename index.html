@@ -900,6 +900,32 @@
   }
 
   .m-hero-shot { display: none; }
+  /* Non-Mac visitors tapping Download: a small sheet instead of a
+     useless .dmg download. */
+  #macsheet {
+    position: fixed; inset: 0; z-index: 300; display: flex;
+    align-items: flex-end; justify-content: center;
+    background: rgba(15,15,20,.45);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  }
+  #macsheet.on { opacity: 1; pointer-events: auto; }
+  .macsheet-card {
+    background: #fff; border-radius: 26px 26px 0 0; width: 100%;
+    max-width: 560px; padding: 30px 26px 40px; text-align: center;
+    transform: translateY(24px); transition: transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  #macsheet.on .macsheet-card { transform: none; }
+  .macsheet-card h3 { font-size: 21px; font-weight: 800; letter-spacing: -.02em; }
+  .macsheet-card p { color: var(--muted); font-size: 14.5px; margin: 10px 0 22px; line-height: 1.55; }
+  .macsheet-card .btn { justify-content: center; width: 100%; margin: 0 0 10px; height: 54px; box-sizing: border-box; }
+  .macsheet-close { background: none; border: none; color: var(--muted); font-size: 13.5px;
+    margin-top: 6px; cursor: pointer; }
+  @media (min-width: 801px) {
+    #macsheet { align-items: center; }
+    .macsheet-card { border-radius: 26px; }
+  }
+
   @media (max-width: 800px) {
     /* Mobile: no live notch — a still of the unfolded card instead */
     .hint, .flare-l, .flare-r, .blob { display: none !important; }
@@ -935,6 +961,9 @@
     .steps, .grid { grid-template-columns: 1fr; }
     .price-cols { grid-template-columns: 1fr; gap: 18px; }
     .price-box { padding: 30px 22px 26px; }
+    /* Static CTA on mobile: the absolute anchor needs the desktop
+       padding reservation, which the override above removes. */
+    .pb-cta { position: static; margin-top: 20px; }
     .pb-tab { font-size: 12.5px; padding: 11px 16px 13px; }
     .swipe-wrap { grid-template-columns: 1fr; gap: 32px; }
     .theme-wrap { grid-template-columns: 1fr; gap: 32px; }
@@ -1796,11 +1825,45 @@ function gcEvent(name) {
     window.goatcounter.count({ path: name, title: name, event: true });
   }
 }
+const isMacDesktop = /Mac/.test(navigator.platform) && navigator.maxTouchPoints < 2;
+const macsheet = document.getElementById('macsheet');
 document.querySelectorAll('a[href$="NotchBud.dmg"]').forEach(a =>
-  a.addEventListener('click', () => gcEvent('download-dmg')));
+  a.addEventListener('click', (e) => {
+    if (!isMacDesktop) {
+      e.preventDefault();
+      gcEvent('download-mobile');
+      macsheet.classList.add('on');
+      return;
+    }
+    gcEvent('download-dmg');
+  }));
+document.getElementById('macclose').addEventListener('click', () => macsheet.classList.remove('on'));
+macsheet.addEventListener('click', (e) => { if (e.target === macsheet) macsheet.classList.remove('on'); });
+document.getElementById('macshare').addEventListener('click', () => {
+  if (navigator.share) {
+    navigator.share({ title: 'NotchBud', url: 'https://notchbud.com' }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText('https://notchbud.com');
+  }
+});
+document.getElementById('maccopy').addEventListener('click', (e) => {
+  navigator.clipboard.writeText('https://notchbud.com');
+  e.target.textContent = 'Copied ✓';
+  setTimeout(() => { e.target.textContent = 'Copy link'; }, 2000);
+});
 document.querySelectorAll('a[href*="buy.polar.sh"]').forEach(a =>
   a.addEventListener('click', () => gcEvent('buy-click')));
 </script>
+<div id="macsheet" role="dialog" aria-modal="true" aria-label="NotchBud is a Mac app">
+  <div class="macsheet-card">
+    <h3>NotchBud is a Mac app 💻</h3>
+    <p>You're on a phone or tablet right now. Send yourself the link and install it on your Mac in one minute.</p>
+    <button class="btn grad" id="macshare">Send link to my Mac</button>
+    <button class="btn grey" id="maccopy">Copy link</button>
+    <button class="macsheet-close" id="macclose">Close</button>
+  </div>
+</div>
+
 <script data-goatcounter="https://notchbud.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script>
 </body>
