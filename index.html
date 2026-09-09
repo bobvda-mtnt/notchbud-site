@@ -976,6 +976,34 @@
     .nc-cols { grid-template-columns: 1fr; }
     .mb-left a:not(.app) { display: none; }
   }
+
+  /* One NotchBud across Apple devices. */
+  .devices-wrap { display:grid; grid-template-columns:1fr 1.12fr; gap:54px; align-items:center; }
+  .device-stage { min-height:430px; position:relative; display:flex; align-items:center; justify-content:center; perspective:1100px; }
+  .device { position:absolute; background:rgba(15,15,20,.78); border:1px solid rgba(255,255,255,.24); box-shadow:0 34px 80px rgba(25,25,45,.24), inset 0 1px rgba(255,255,255,.16); backdrop-filter:blur(26px) saturate(150%); -webkit-backdrop-filter:blur(26px) saturate(150%); }
+  .device.mac { width:390px; height:250px; border-radius:18px; transform:translateX(-34px) rotateY(7deg); animation:deviceMac 7s ease-in-out infinite; }
+  .device.phone { width:128px; height:274px; right:18px; border-radius:30px; transform:translateY(24px) rotateY(-9deg); animation:devicePhone 7s ease-in-out infinite; }
+  .device-notch { height:22px; width:96px; margin:auto; background:#000; border-radius:0 0 10px 10px; }
+  .phone .device-notch { height:22px; width:68px; border-radius:0 0 14px 14px; }
+  .device-card { margin:12px; padding:14px; border-radius:15px; background:linear-gradient(180deg,rgba(0,0,0,.82),rgba(255,255,255,.09)); color:#fff; text-align:left; }
+  .device-card b { font-size:12px; display:block; margin-bottom:8px; }
+  .device-line { height:7px; border-radius:9px; background:rgba(255,255,255,.22); margin:7px 0; }
+  .device-line.hot { width:74%; background:linear-gradient(90deg,#ff8c42,#ffd15c); }
+  .device-line.short { width:55%; }
+  .sync-orb { width:58px; height:58px; border-radius:50%; display:grid; place-items:center; position:absolute; z-index:4; color:white; font-size:23px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.38); backdrop-filter:blur(18px); box-shadow:0 12px 32px rgba(60,75,130,.22); animation:syncPulse 2.8s ease-in-out infinite; }
+  .platform-list { display:grid; gap:10px; margin-top:24px; }
+  .platform-row { display:flex; align-items:center; gap:12px; padding:13px 15px; border-radius:16px; background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.78); }
+  .platform-row strong { display:block; font-size:14px; }.platform-row span { color:var(--muted); font-size:12.5px; }
+  .platform-dot { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:#111; color:#fff; }
+  @keyframes deviceMac { 0%,100%{transform:translateX(-34px) rotateY(7deg) translateY(0)}50%{transform:translateX(-34px) rotateY(3deg) translateY(-8px)} }
+  @keyframes devicePhone { 0%,100%{transform:translateY(24px) rotateY(-9deg)}50%{transform:translateY(13px) rotateY(-4deg)} }
+  @keyframes syncPulse { 0%,100%{transform:scale(1);box-shadow:0 12px 32px rgba(60,75,130,.22)}50%{transform:scale(1.08);box-shadow:0 16px 44px rgba(78,108,210,.34)} }
+  .macsheet-card .device-choices { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:18px 0 8px; }
+  .macsheet-card .device-choice { text-decoration:none; color:#111; padding:16px 10px; border-radius:16px; background:#f2f3f6; font-weight:750; transition:transform .25s var(--ease),background .25s; }
+  .macsheet-card .device-choice:hover { transform:translateY(-3px); background:#e8eaff; }
+  .macsheet-card .device-choice small { display:block; color:var(--muted); font-size:11px; margin-top:4px; font-weight:550; }
+
+  @media (max-width: 800px) { .devices-wrap{grid-template-columns:1fr;gap:12px}.device-stage{min-height:360px}.device.mac{width:310px;height:210px}.device.phone{right:3px}.macsheet-card .device-choices{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
@@ -1263,35 +1291,40 @@ Write one markdown file per day into the NotchBud folder.
   </div>
 </section>
 
+
+<section id="devices" class="wrap">
+  <div class="devices-wrap">
+    <div>
+      <span class="kicker">Mac + iPhone</span>
+      <h2>Your day follows you.</h2>
+      <p class="lead">NotchBud lives under your MacBook notch and in your pocket. Your private iCloud folder keeps briefings, priorities, feedback, and todos in step across both.</p>
+      <div class="platform-list">
+        <div class="platform-row"><i class="platform-dot">⌘</i><div><strong>NotchBud for Mac</strong><span>Liquid Glass briefings, meetings, music, and quick capture.</span></div></div>
+        <div class="platform-row"><i class="platform-dot">◉</i><div><strong>NotchBud for iPhone</strong><span>Briefing widgets, interactive todos, and Dynamic Island meeting alerts.</span></div></div>
+      </div>
+    </div>
+    <div class="device-stage" aria-hidden="true">
+      <div class="device mac"><div class="device-notch"></div><div class="device-card"><b>☀️ Morning Brief</b><div class="device-line hot"></div><div class="device-line"></div><div class="device-line short"></div></div><div class="device-card"><b>✅ Todos</b><div class="device-line"></div><div class="device-line hot"></div></div></div>
+      <div class="sync-orb">☁︎</div>
+      <div class="device phone"><div class="device-notch"></div><div class="device-card"><b>Today</b><div class="device-line hot"></div><div class="device-line"></div><div class="device-line short"></div></div><div class="device-card"><b>2 todos</b><div class="device-line"></div><div class="device-line hot"></div></div></div>
+    </div>
+  </div>
+</section>
+
 <section id="pricing" class="wrap centered">
-  <span class="kicker">Pricing</span>
-  <h2>Free download.</h2>
-  <p class="lead">Use everything free for 7 days, or make it yours right away.<br>One price, once, no subscription.</p>
-  <div class="price-cols">
-    <div class="price-box">
-      <h4 class="pc-title">Try it free</h4>
-      <div class="pb-price pb-free">7 days</div>
-      <div class="pb-note">Every feature, nothing to enter</div>
-      <ul class="pb-list">
-        <li>Full app: no card, no account</li>
-        <li>Morning brief, evening recap, feedback loop</li>
-        <li>Native macOS app, featherlight</li>
-      </ul>
-      <div class="pb-cta"><a class="btn big grad" href="/NotchBud.dmg"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.7-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> Download for macOS</a>
-      <div class="pb-sub">Notarized by Apple. Running in one minute.</div></div>
-    </div>
-    <div class="price-box">
-      <h4 class="pc-title">Or unlock it now</h4>
-      <div class="pb-price"><span class="strike">€29</span>€14<small>once</small></div>
-      <div class="pb-note">Early-bird price</div>
-      <ul class="pb-list">
-        <li>Yours forever, all 1.x updates included</li>
-        <li>License key in your inbox instantly</li>
-        <li>Use on all your own Macs</li>
-      </ul>
-      <div class="pb-cta"><a class="btn big grey" href="https://buy.polar.sh/polar_cl_a6LL1vbPlXafFiHld67d20UAyIfV7MwnfmJzQ2iKwUq">Buy NotchBud</a>
-      <div class="pb-sub">Works before, during, or after the trial.</div></div>
-    </div>
+  <span class="kicker">One purchase</span>
+  <h2>NotchBud everywhere.</h2>
+  <p class="lead">Download free on Mac and iPhone, try every feature, then unlock NotchBud forever with one purchase.</p>
+  <div class="price-box" style="max-width:620px;margin:34px auto 0">
+    <h4 class="pc-title">Lifetime Unlock</h4>
+    <div class="pb-price">€14.99<small>once</small></div>
+    <div class="pb-note">No subscription. One Apple purchase for NotchBud.</div>
+    <ul class="pb-list">
+      <li>Mac app, iPhone app, widgets, and Dynamic Island</li>
+      <li>Private iCloud sync across your own devices</li>
+      <li>All NotchBud 1.x updates included</li>
+    </ul>
+    <div class="pb-cta"><a class="btn big grad js-store" href="https://apps.apple.com/app/id6810383700"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.7-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> View on the App Store</a><div class="pb-sub">Available for macOS and iPhone.</div></div>
   </div>
 </section>
 
@@ -1301,10 +1334,10 @@ Write one markdown file per day into the NotchBud folder.
   <div class="faq">
     <details><summary>Do I need a Mac with a notch?</summary><p>NotchBud is designed for notched MacBooks (2021 and later). A menu-bar mode for external displays and older Macs is on the roadmap.</p></details>
     <details><summary>Which AI does it work with?</summary><p>Any of them. NotchBud reads plain markdown from a folder: Claude scheduled tasks, ChatGPT, n8n, a cron script, or you typing by hand. If it can write a file, it can brief you.</p></details>
-    <details><summary>Where does my data live?</summary><p>In a folder on your own Mac, as markdown and JSON you can open with any editor. A local folder is the default and the safest. NotchBud has no servers, no analytics, no account.</p></details>
+    <details><summary>Where does my data live?</summary><p>In your private NotchBud iCloud folder as markdown and JSON you can open with any editor. It syncs between your Mac, iPhone, and widgets without a NotchBud account or NotchBud server.</p></details>
     <details><summary>Will it fill up my disk?</summary><p>No. NotchBud keeps 30 days of briefings and automatically expires stale flags. A full year of daily use is a few hundred kilobytes.</p></details>
-    <details><summary>What happens after the trial?</summary><p>NotchBud asks for a license. Your briefings and todos stay untouched in your folder either way. It is your data.</p></details>
-    <details><summary>Is there an iPhone app?</summary><p>In development: a companion app with home-screen widgets that syncs your todos through your own iCloud. It will be free for license holders when it ships.</p></details>
+    <details><summary>What happens after the trial?</summary><p>NotchBud offers a one-time Lifetime Unlock through Apple. Your briefings and todos stay untouched either way. It is your data.</p></details>
+    <details><summary>Is there an iPhone app?</summary><p>Yes. It includes briefing and todo widgets, interactive completion, quick capture, and Dynamic Island meeting reminders, all synced through your private iCloud folder.</p></details>
   </div>
 </section>
 
@@ -1315,13 +1348,15 @@ Write one markdown file per day into the NotchBud folder.
   </div>
 </footer>
 
-<div id="macsheet" role="dialog" aria-modal="true" aria-label="NotchBud is a Mac app">
+<div id="macsheet" role="dialog" aria-modal="true" aria-label="Get NotchBud for Mac and iPhone">
   <div class="macsheet-card">
-    <h3>NotchBud is a Mac app 💻</h3>
-    <p>You're on a phone or tablet right now. Send yourself the link and install it on your Mac in one minute.</p>
-    <button class="btn grad" id="macshare">Send link to my Mac</button>
-    <button class="btn grey" id="maccopy">Copy link</button>
-    <button class="macsheet-close" id="macclose">Close</button>
+    <h3>One NotchBud. Two devices.</h3>
+    <p>Start on the device in your hand, then add the other. Your briefings and todos stay in sync through your private iCloud folder.</p>
+    <div class="device-choices">
+      <a class="device-choice" href="https://apps.apple.com/app/id6810383700">⌘ Mac<small>Notch, meetings, and quick capture</small></a>
+      <a class="device-choice" href="https://apps.apple.com/app/id6810383700">◉ iPhone<small>Widgets and Dynamic Island</small></a>
+    </div>
+    <button class="macsheet-close" id="macclose">Not now</button>
   </div>
 </div>
 
@@ -1835,34 +1870,15 @@ function gcEvent(name) {
     window.goatcounter.count({ path: name, title: name, event: true });
   }
 }
-const isMacDesktop = /Mac/.test(navigator.platform) && navigator.maxTouchPoints < 2;
 const macsheet = document.getElementById('macsheet');
-document.querySelectorAll('a[href$="NotchBud.dmg"]').forEach(a =>
-  a.addEventListener('click', (e) => {
-    if (!isMacDesktop) {
-      e.preventDefault();
-      gcEvent('download-mobile');
-      macsheet.classList.add('on');
-      return;
-    }
-    gcEvent('download-dmg');
-  }));
+const storeLinks = document.querySelectorAll('.js-store');
+storeLinks.forEach(a => a.addEventListener('click', () => gcEvent('app-store-click')));
 document.getElementById('macclose').addEventListener('click', () => macsheet.classList.remove('on'));
-macsheet.addEventListener('click', (e) => { if (e.target === macsheet) macsheet.classList.remove('on'); });
-document.getElementById('macshare').addEventListener('click', () => {
-  if (navigator.share) {
-    navigator.share({ title: 'NotchBud', url: 'https://notchbud.com' }).catch(() => {});
-  } else {
-    navigator.clipboard.writeText('https://notchbud.com');
-  }
-});
-document.getElementById('maccopy').addEventListener('click', (e) => {
-  navigator.clipboard.writeText('https://notchbud.com');
-  e.target.textContent = 'Copied ✓';
-  setTimeout(() => { e.target.textContent = 'Copy link'; }, 2000);
-});
-document.querySelectorAll('a[href*="buy.polar.sh"]').forEach(a =>
-  a.addEventListener('click', () => gcEvent('buy-click')));
+macsheet.addEventListener('click', e => { if (e.target === macsheet) macsheet.classList.remove('on'); });
+// A single, polite cross-device introduction. It never interrupts repeat visits.
+if (!sessionStorage.getItem('nb-devices-seen')) {
+  setTimeout(() => { macsheet.classList.add('on'); sessionStorage.setItem('nb-devices-seen', '1'); }, 4200);
+}
 </script>
 
 <script data-goatcounter="https://notchbud.goatcounter.com/count"
